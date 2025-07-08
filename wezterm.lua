@@ -20,24 +20,24 @@ config.keys = {
 	{
 		key = "d",
 		mods = "CMD",
-		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+		action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
 	{
-		key = "d",
+		key = "D",
 		mods = "CMD|SHIFT",
-		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+		action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
 	{
 		key = "w",
 		mods = "CMD",
-		action = wezterm.action.CloseCurrentPane({ confirm = true }),
+		action = act.CloseCurrentPane({ confirm = true }),
 	},
 	{
-		key = "r",
+		key = "R",
 		mods = "CMD|SHIFT",
 		action = act.PromptInputLine({
 			description = "Enter new name for tab",
-			action = wezterm.action_callback(function(window, pane, line)
+			action = act.callback(function(window, pane, line)
 				if line then
 					window:active_tab():set_title(line)
 				end
@@ -45,9 +45,9 @@ config.keys = {
 		}),
 	},
 	{
-		key = "f",
+		key = "F",
 		mods = "CMD|SHIFT",
-		action = wezterm.action.ToggleFullScreen,
+		action = act.ToggleFullScreen,
 	},
 	{
 		key = "LeftArrow",
@@ -79,11 +79,25 @@ config.keys = {
 		mods = "CMD|SHIFT",
 		action = act.AdjustPaneSize({ "Down", 5 }),
 	},
-	{ key = "K", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Up", 5 }) },
+	{
+		key = "K",
+		mods = "CMD|SHIFT",
+		action = act.AdjustPaneSize({ "Up", 5 }),
+	},
 	{
 		key = "L",
 		mods = "CMD|SHIFT",
 		action = act.AdjustPaneSize({ "Right", 5 }),
+	},
+	{
+		key = "X",
+		mods = "CMD|SHIFT",
+		action = act.ActivateCopyMode,
+	},
+	{
+		key = "Z",
+		mods = "CMD|SHIFT",
+		action = act.TogglePaneZoomState,
 	},
 }
 
