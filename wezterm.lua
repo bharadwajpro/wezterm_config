@@ -145,6 +145,16 @@ config.keys = {
 	},
 	{ key = "n", mods = "CTRL|ALT", action = act.SwitchWorkspaceRelative(1) },
 	{ key = "p", mods = "CTRL|ALT", action = act.SwitchWorkspaceRelative(-1) },
+	{
+		key = "u",
+		mods = "CTRL|ALT",
+		action = act.SwitchToWorkspace({
+			name = "monitoring",
+			spawn = {
+				args = { "top" },
+			},
+		}),
+	},
 }
 
 local ssh_config = require("ssh_config")
