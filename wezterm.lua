@@ -113,6 +113,38 @@ config.keys = {
 	},
 	{ key = "{", mods = "SHIFT|ALT", action = act.MoveTabRelative(-1) },
 	{ key = "}", mods = "SHIFT|ALT", action = act.MoveTabRelative(1) },
+	-- Prompt for a name to use for a new workspace and switch to it.
+	{
+		key = "w",
+		mods = "CTRL|ALT",
+		action = act.PromptInputLine({
+			description = wezterm.format({
+				{ Attribute = { Intensity = "Bold" } },
+				{ Foreground = { AnsiColor = "Fuchsia" } },
+				{ Text = "Enter name for new workspace" },
+			}),
+			action = wezterm.action_callback(function(window, pane, line)
+				-- line will be `nil` if they hit escape without entering anything
+				-- An empty string if they just hit enter
+				-- Or the actual line of text they wrote
+				if line then
+					window:perform_action(
+						act.SwitchToWorkspace({
+							name = line,
+						}),
+						pane
+					)
+				end
+			end),
+		}),
+	},
+	{
+		key = "9",
+		mods = "CTRL|ALT",
+		action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
+	},
+	{ key = "n", mods = "CTRL|ALT", action = act.SwitchWorkspaceRelative(1) },
+	{ key = "p", mods = "CTRL|ALT", action = act.SwitchWorkspaceRelative(-1) },
 }
 
 local ssh_config = require("ssh_config")
