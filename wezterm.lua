@@ -12,9 +12,21 @@ config.color_scheme = "tokyonight"
 
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
+config.tab_max_width = 24
 
 config.enable_scroll_bar = true
 config.native_macos_fullscreen_mode = true
+
+wezterm.on("update-right-status", function(window, pane)
+	local date = wezterm.strftime("%Y-%m-%d %H:%M:%S")
+
+	-- Make it italic and underlined
+	window:set_right_status(wezterm.format({
+		{ Attribute = { Underline = "Single" } },
+		{ Attribute = { Italic = true } },
+		{ Text = window:active_workspace() .. " " .. date },
+	}))
+end)
 
 config.keys = {
 	{
@@ -30,14 +42,14 @@ config.keys = {
 	{
 		key = "w",
 		mods = "CMD",
-		action = act.CloseCurrentPane({ confirm = true }),
+		action = act.CloseCurrentPane({ confirm = false }),
 	},
 	{
 		key = "R",
 		mods = "CMD|SHIFT",
 		action = act.PromptInputLine({
 			description = "Enter new name for tab",
-			action = act.callback(function(window, pane, line)
+			action = wezterm.action_callback(function(window, pane, line)
 				if line then
 					window:active_tab():set_title(line)
 				end
@@ -99,6 +111,13 @@ config.keys = {
 		mods = "CMD|SHIFT",
 		action = act.TogglePaneZoomState,
 	},
+	{ key = "{", mods = "SHIFT|ALT", action = act.MoveTabRelative(-1) },
+	{ key = "}", mods = "SHIFT|ALT", action = act.MoveTabRelative(1) },
 }
+
+local ssh_config = require("ssh_config")
+for k, v in pairs(ssh_config) do
+	config[k] = v
+end
 
 return config
