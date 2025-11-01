@@ -24,7 +24,7 @@ wezterm.on("update-right-status", function(window, pane)
 	window:set_right_status(wezterm.format({
 		{ Attribute = { Underline = "Single" } },
 		{ Attribute = { Italic = true } },
-		{ Text = window:active_workspace() .. " " .. date },
+		{ Text = pane:get_domain_name() .. "/" .. window:active_workspace() .. " " .. date },
 	}))
 end)
 
@@ -145,6 +145,22 @@ config.keys = {
 	},
 	{ key = "n", mods = "CTRL|ALT", action = act.SwitchWorkspaceRelative(1) },
 	{ key = "p", mods = "CTRL|ALT", action = act.SwitchWorkspaceRelative(-1) },
+	{
+		key = "r",
+		mods = "CTRL|ALT",
+		action = act.PromptInputLine({
+			description = wezterm.format({
+				{ Attribute = { Intensity = "Bold" } },
+				{ Foreground = { AnsiColor = "Fuchsia" } },
+				{ Text = "Enter new name for workspace" },
+			}),
+			action = wezterm.action_callback(function(window, pane, line)
+				if line then
+					wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line)
+				end
+			end),
+		}),
+	},
 	{
 		key = "u",
 		mods = "CTRL|ALT",
